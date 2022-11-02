@@ -12,6 +12,12 @@ Plug 'ctrlpvim/ctrlp.vim' " fuzzy find files
 Plug 'scrooloose/nerdcommenter'
 Plug 'prettier/vim-prettier', { 'do': 'yarn install' }
 
+Plug 'SirVer/ultisnips'
+Plug 'mlaursen/vim-react-snippets'
+
+Plugin 'pangloss/vim-javascript'
+Plugin 'mxw/vim-jsx'
+
 Plug 'mattn/emmet-vim'
 Plug 'nvim-lua/plenary.nvim'
 Plug 'nvim-telescope/telescope.nvim'
@@ -20,7 +26,7 @@ Plug 'nvim-telescope/telescope-fzy-native.nvim'
 Plug 'christoomey/vim-tmux-navigator'
 Plug 'draculatheme.com/vim'
 Plug 'morhetz/gruvbox'
-
+Plug 'folke/tokyonight.nvim'
 Plug 'HerringtonDarkholme/yats.vim' " TS Syntax
 
 " Initialize plugin system
@@ -63,6 +69,27 @@ command! -nargs=0 Prettier :CocCommand prettier.formatFile
 "let g:prettier#autoformat = 0
 "autocmd BufWritePre *.js,*.jsx,*.mjs,*.ts,*.tsx,*.css,*.less,*.scss,*.json,*.graphql,*.md,*.vue,*.yaml,*.html PrettierAsync
 
+" Use tab for trigger completion with characters ahead and navigate.
+" NOTE: Use command ':verbose imap <tab>' to make sure tab is not mapped by
+" other plugin before putting this into your config.
+inoremap <silent><expr> <TAB>
+      \ pumvisible() ? "\<C-n>" :
+      \ <SID>check_back_space() ? "\<TAB>" :
+      \ coc#refresh()
+inoremap <expr><S-TAB> pumvisible() ? "\<C-p>" : "\<C-h>"
+
+function! s:check_back_space() abort
+  let col = col('.') - 1
+  return !col || getline('.')[col - 1]  =~# '\s'
+endfunction
+
+" Use <cr> to confirm completion, `<C-g>u` means break undo chain at current
+" position. Coc only does snippet and additional edit on confirm.
+if exists('*complete_info')
+  inoremap <expr> <cr> complete_info()["selected"] != "-1" ? "\<C-y>" : "\<C-g>u\<CR>"
+else
+  imap <expr> <cr> pumvisible() ? "\<C-y>" : "\<C-g>u\<CR>"
+endif
 
 " ctrlp
 let g:ctrlp_user_command = ['.git/', 'git --git-dir=%s/.git ls-files -oc --exclude-standard']
@@ -80,7 +107,8 @@ set shiftwidth=2
 " always uses spaces instead of tab characters
 set expandtab
 
-colorscheme gruvbox
+colorscheme tokyonight
+colorscheme tokyonight-day
 
 " sync open file with NERDTree
 " " Check if NERDTree is open or active
